@@ -1,0 +1,18 @@
+[
+  {
+    "ContainingType": "SerieHubAPI.Controllers.UsuarioHubController",
+    "Method": "RegistrarUsuario",
+    "RelativePath": "api/UsuarioHub/registrar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SerieHubAPI.Dtos.CriarUsuarioDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

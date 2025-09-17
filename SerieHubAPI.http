@@ -1,0 +1,6 @@
+@SerieHubAPI_HostAddress = http://localhost:5145
+
+GET {{SerieHubAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
