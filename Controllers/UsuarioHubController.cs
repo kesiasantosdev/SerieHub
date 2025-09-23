@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SerieHubAPI.Data;
 using SerieHubAPI.Dtos;
+using SerieHubAPI.Models;
 using SerieHubAPI.Services;
 
 namespace SerieHubAPI.Controllers
@@ -9,36 +11,41 @@ namespace SerieHubAPI.Controllers
     [ApiController]
     public class UsuarioHubController : ControllerBase
     {
-        private readonly IUsuarioService _usuarioService;
+        private readonly AppDbContext _db;
 
-        public UsuarioHubController(IUsuarioService usuarioService)
+        public UsuarioHubController(AppDbContext db)
         {
-            _usuarioService = usuarioService;
+            _db = db;
         }
         [HttpPost("registrar")]
         public IActionResult RegistrarUsuario([FromBody] CriarUsuarioDto dto)
         {
             try
             {
-                _usuarioService.RegistrarUsuario(dto);
-                return Ok("Usuário registrado com sucesso!");
+                var novoUsuario = new Usuarios(dto.Nome, dto.Email, dto.Senha);
+                novoUsuario.Salvar(_db);
+                return Ok(new { message = "Usuário registrado com sucesso!" });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
-        [HttpPost("Login")]
-        public IActionResult login([FromBody] LoginUsuarioDto dto)
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] LoginUsuarioDto dto)
         {
             try
             {
-                var token = _usuarioService.Login(dto);
-                return Ok(new { Token = token });
+                var usuario = Usuarios.BuscarPorEmail(dto.Email, _db);
+                if (usuario == null || usuario.Senha != dto.Senha)
+                {
+                    return Unauthorized(new { message = "Email ou senha inválidos." });
+                }
+                return Ok(new { message = $"Bem-vindo de volta, {usuario.Nome}!" });
             }
             catch (Exception ex)
             {
-                return Unauthorized(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

@@ -2,6 +2,6 @@
 {
     public class AtualizarProgressoDto
     {
-        public int TemporadaAtual { get; set; }
+        public int NovaTemporada { get; set; }
     }
 }

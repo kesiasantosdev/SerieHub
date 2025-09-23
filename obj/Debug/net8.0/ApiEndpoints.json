@@ -1,5 +1,90 @@
 [
   {
+    "ContainingType": "SerieHubAPI.Controllers.SerieHubController",
+    "Method": "AdicionarSerieFavorita",
+    "RelativePath": "api/SerieHub",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SerieHubAPI.Dtos.AdicionarSerieDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SerieHubAPI.Controllers.SerieHubController",
+    "Method": "AtualizarProgressoSerie",
+    "RelativePath": "api/SerieHub/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "SerieHubAPI.Dtos.AtualizarProgressoDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SerieHubAPI.Controllers.SerieHubController",
+    "Method": "RemoverSerieFavorita",
+    "RelativePath": "api/SerieHub/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SerieHubAPI.Controllers.SerieHubController",
+    "Method": "ListarSeriesDoUsuario",
+    "RelativePath": "api/SerieHub/usuario/{usuarioId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SerieHubAPI.Controllers.UsuarioHubController",
+    "Method": "Login",
+    "RelativePath": "api/UsuarioHub/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SerieHubAPI.Dtos.LoginUsuarioDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "SerieHubAPI.Controllers.UsuarioHubController",
     "Method": "RegistrarUsuario",
     "RelativePath": "api/UsuarioHub/registrar",

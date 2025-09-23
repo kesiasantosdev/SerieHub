@@ -170,3 +170,5 @@ C:\Users\74838\source\repos\SerieHub\SerieHubAPI\obj\Debug\net8.0\SerieHubAPI.ge
 C:\Users\74838\source\repos\SerieHub\SerieHubAPI\obj\Debug\net8.0\ref\SerieHubAPI.dll
 C:\Users\74838\source\repos\SerieHub\SerieHubAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\74838\source\repos\SerieHub\SerieHubAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\74838\source\repos\SerieHub\SerieHubAPI\obj\Debug\net8.0\SerieHubAPI.sourcelink.json
+C:\Users\74838\source\repos\SerieHub\SerieHubAPI\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll

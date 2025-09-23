@@ -12,11 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-builder.Services.AddScoped<UsuarioData>();
-builder.Services.AddScoped<SerieData>();
-builder.Services.AddScoped<SerieService>();
 builder.Services.AddDbContext<AppDbContext>(options =>options.UseSqlServer(connectionString));
+builder.Services.AddScoped<TmdbService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
