@@ -22,13 +22,20 @@ namespace SerieHubAPI.Controllers
         {
             try
             {
+                var emailJaExiste = _db.Usuarios.Any(u => u.Email == dto.Email);
+                if (emailJaExiste)
+                {
+                    return BadRequest(new { message = "Este endereço de email já está cadastrado. Tente fazer o login." });
+                }
+
                 var novoUsuario = new Usuarios(dto.Nome, dto.Email, dto.Senha);
                 novoUsuario.Salvar(_db);
                 return Ok(new { message = "Usuário registrado com sucesso!" });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                Console.WriteLine($"Ocorreu um erro inesperado: {ex.Message}"); // Log para o desenvolvedor ver
+                return StatusCode(500, new { message = "Ocorreu um erro no nosso sistema. Por favor, tente novamente mais tarde." });
             }
         }
         [HttpPost("login")]

@@ -122,6 +122,27 @@
         }
       }
     },
+    "/api/SerieHub/buscar": {
+      "get": {
+        "tags": [
+          "SerieHub"
+        ],
+        "parameters": [
+          {
+            "name": "nome",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/UsuarioHub/registrar": {
       "post": {
         "tags": [

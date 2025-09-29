@@ -54,6 +54,22 @@
   },
   {
     "ContainingType": "SerieHubAPI.Controllers.SerieHubController",
+    "Method": "BuscarSeriesPorNome",
+    "RelativePath": "api/SerieHub/buscar",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nome",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SerieHubAPI.Controllers.SerieHubController",
     "Method": "ListarSeriesDoUsuario",
     "RelativePath": "api/SerieHub/usuario/{usuarioId}",
     "HttpMethod": "GET",

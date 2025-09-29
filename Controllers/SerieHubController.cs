@@ -80,6 +80,19 @@ namespace SerieHubAPI.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+        [HttpGet("buscar")]
+        public async Task<IActionResult> BuscarSeriesPorNome([FromQuery] string nome)
+        {
+            try
+            {
+                var resultados = await _tmdbService.BuscarSeriesPorNomeAsync(nome);
+                return Ok(resultados);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 
 }
