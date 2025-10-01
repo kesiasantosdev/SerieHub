@@ -65,11 +65,11 @@ namespace SerieHubAPI.Models
         {
             if (novaTemporada > 0 && novaTemporada <= this.TotalTemporadas)
             {
-                this.TemporadaAtual = novaTemporada; // 'this' para ser claro que estamos mudando a característica do próprio objeto
+                this.TemporadaAtual = novaTemporada; 
             }
             else
             {
-                // Se a temporada for inválida, damos um aviso claro.
+                
                 throw new Exception("Número de temporada inválido");
             }
         }

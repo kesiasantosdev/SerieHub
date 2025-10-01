@@ -56,12 +56,14 @@ namespace SerieHubAPI.Controllers
                 var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var seriesDoUsuario = Serie.ListarSeriesDoUsuario(usuarioId, _db);
 
-                var resultadoDto = seriesDoUsuario.Select(serie => new SerieTmdbDto
+                var resultadoDto = seriesDoUsuario.Select(serie => new 
                 {
-                    Id = serie.TmdbId,
+                    DbId = serie.Id,
+                    TmdbId = serie.TmdbId,
                     Name = serie.Nome,
                     PosterPath = serie.UrlPoster,
-                    NumberOfSeasons = serie.TotalTemporadas
+                    NumberOfSeasons = serie.TotalTemporadas,
+                    TemporadaAtual = serie.TemporadaAtual
                 }).ToList();
 
                 return Ok(resultadoDto);
