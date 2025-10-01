@@ -19,7 +19,7 @@ namespace SerieHubAPI.Services
             var url = $"https://api.themoviedb.org/3/tv/{tmdbId}?api_key={_apiKey}&language=pt-BR";
             var response = await _httpClient.GetAsync(url);
             if (!response.IsSuccessStatusCode)
-            {                
+            {
                 return null;
             }
             var content = await response.Content.ReadAsStringAsync();
@@ -27,20 +27,36 @@ namespace SerieHubAPI.Services
             var serieDto = JsonSerializer.Deserialize<SerieTmdbDto>(content, options);
             return serieDto;
         }
-        public async Task<List<TmdbSearchResultDto>> BuscarSeriesPorNomeAsync(string query)
+        public async Task<List<SerieTmdbDto>> BuscarSeriesPorNomeAsync(string query)
         {
             var url = $"https://api.themoviedb.org/3/search/tv?api_key={_apiKey}&language=pt-BR&query={query}";
 
             var response = await _httpClient.GetAsync(url);
             if (!response.IsSuccessStatusCode)
             {
-                return new List<TmdbSearchResultDto>();
+                return new List<SerieTmdbDto>();
             }
 
             var content = await response.Content.ReadAsStringAsync();
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             var searchResponse = JsonSerializer.Deserialize<TmdbSearchResponseDto>(content, options);
-            return searchResponse?.results ?? new List<TmdbSearchResultDto>();
+            
+            if (searchResponse?.results == null)
+            {
+                return new List<SerieTmdbDto>();
+            }
+            var listaFinalDeSeries = new List<SerieTmdbDto>();
+
+            foreach (var serieBasica in searchResponse.results)
+            {
+                var detalhesDaSerie = await BuscarSeriePorIdAsync(serieBasica.Id);
+
+                if (detalhesDaSerie != null)
+                {
+                    listaFinalDeSeries.Add(detalhesDaSerie);
+                }
+            }
+            return listaFinalDeSeries;
         }
     }
 }
