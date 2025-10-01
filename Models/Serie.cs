@@ -32,7 +32,7 @@ namespace SerieHubAPI.Models
         }
 
 
-        public static Serie AdicionarNovaSerieFavorita(int usuarioId, int tmdbId, AppDbContext db, TmdbService tmdbService)
+        public static async Task<Serie> AdicionarNovaSerieFavoritaAsync(int usuarioId, int tmdbId, AppDbContext db, TmdbService tmdbService)
         {
             bool JaExiste = db.Series.Any(s => s.UsuarioId == usuarioId && s.TmdbId == tmdbId);
 
@@ -56,7 +56,7 @@ namespace SerieHubAPI.Models
             );
 
             db.Series.Add(novaSerie);
-            db.SaveChanges();
+            db.SaveChangesAsync();
 
             return novaSerie;
 

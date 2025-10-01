@@ -1,22 +1,6 @@
 [
   {
     "ContainingType": "SerieHubAPI.Controllers.SerieHubController",
-    "Method": "AdicionarSerieFavorita",
-    "RelativePath": "api/SerieHub",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "SerieHubAPI.Dtos.AdicionarSerieDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "SerieHubAPI.Controllers.SerieHubController",
     "Method": "AtualizarProgressoSerie",
     "RelativePath": "api/SerieHub/{id}",
     "HttpMethod": "PUT",
@@ -54,6 +38,22 @@
   },
   {
     "ContainingType": "SerieHubAPI.Controllers.SerieHubController",
+    "Method": "AdicionarSerieFavorita",
+    "RelativePath": "api/SerieHub/adicionar-favorito",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SerieHubAPI.Dtos.AdicionarSerieDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SerieHubAPI.Controllers.SerieHubController",
     "Method": "BuscarSeriesPorNome",
     "RelativePath": "api/SerieHub/buscar",
     "HttpMethod": "GET",
@@ -70,14 +70,24 @@
   },
   {
     "ContainingType": "SerieHubAPI.Controllers.SerieHubController",
-    "Method": "ListarSeriesDoUsuario",
-    "RelativePath": "api/SerieHub/usuario/{usuarioId}",
+    "Method": "ListarMinhasSeriesFavoritas",
+    "RelativePath": "api/SerieHub/meus-favoritos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SerieHubAPI.Controllers.SerieHubController",
+    "Method": "BuscarDetalhesDaSerie",
+    "RelativePath": "api/SerieHub/serie/{tmdbId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "usuarioId",
+        "Name": "tmdbId",
         "Type": "System.Int32",
         "IsRequired": true
       }

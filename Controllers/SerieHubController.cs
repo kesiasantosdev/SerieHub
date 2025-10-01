@@ -1,13 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SerieHubAPI.Data;
 using SerieHubAPI.Dtos;
 using SerieHubAPI.Models;
 using SerieHubAPI.Services;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace SerieHubAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SerieHubController : ControllerBase
     {
         private readonly AppDbContext _db;
@@ -19,34 +24,75 @@ namespace SerieHubAPI.Controllers
             _tmdbService = tmdbService;
         }
 
-        [HttpPost]
-        public IActionResult AdicionarSerieFavorita([FromBody] AdicionarSerieDto dto)
+        [HttpPost("adicionar-favorito")]
+        [Authorize]
+
+        public async Task<IActionResult> AdicionarSerieFavorita([FromBody] AdicionarSerieDto dto)
         {
             try
             {
-                var novaSerie = Serie.AdicionarNovaSerieFavorita(dto.UsuarioId, dto.TmdbId, _db, _tmdbService);
+                var usuarioIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(usuarioIdString))
+                {
+                    return Unauthorized();
+                }
+                var usuarioId = int.Parse(usuarioIdString);
+
+                var novaSerie = await Serie.AdicionarNovaSerieFavoritaAsync(usuarioId, dto.TmdbId, _db, _tmdbService);
+
                 return Ok(novaSerie);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, new { message = "Ocorreu um erro interno ao adicionar serie favorita" });
             }
         }
-
-        [HttpGet("usuario/{usuarioId}")]
-        public IActionResult ListarSeriesDoUsuario(int usuarioId)
+        [HttpGet("meus-favoritos")]
+        [Authorize]
+        public IActionResult ListarMinhasSeriesFavoritas()
         {
             try
             {
+                var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 var seriesDoUsuario = Serie.ListarSeriesDoUsuario(usuarioId, _db);
 
-                return Ok(seriesDoUsuario);
+                var resultadoDto = seriesDoUsuario.Select(serie => new SerieTmdbDto
+                {
+                    Id = serie.TmdbId,
+                    Name = serie.Nome,
+                    PosterPath = serie.UrlPoster,
+                    NumberOfSeasons = serie.TotalTemporadas
+                }).ToList();
+
+                return Ok(resultadoDto);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, new { message = "Ocorreu um erro ao buscar suas series" });
             }
         }
+
+
+        [HttpGet("serie/{tmdbId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> BuscarDetalhesDaSerie(int tmdbId)
+        {
+            try
+            {
+                var detalhesDaSerie = await _tmdbService.BuscarSeriePorIdAsync(tmdbId);
+                if (detalhesDaSerie == null)
+                {
+                    return NotFound(new { message = "Série não encontrada na API do TMDB" });
+                }
+                return Ok(detalhesDaSerie);
+            }
+            catch (Exception )
+            {
+                return StatusCode(500, new { message = "Ocorreu um erro ao buscar os detalhes da série" });
+            }
+        }
+        
+        
         [HttpPut("{id}")]
         public IActionResult AtualizarProgressoSerie(int id, [FromBody] AtualizarProgressoDto dto)
         {
@@ -81,6 +127,7 @@ namespace SerieHubAPI.Controllers
             }
         }
         [HttpGet("buscar")]
+        [AllowAnonymous]
         public async Task<IActionResult> BuscarSeriesPorNome([FromQuery] string nome)
         {
             try

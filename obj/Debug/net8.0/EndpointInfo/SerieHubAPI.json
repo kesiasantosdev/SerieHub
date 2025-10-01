@@ -5,7 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/SerieHub": {
+    "/api/SerieHub/adicionar-favorito": {
       "post": {
         "tags": [
           "SerieHub"
@@ -36,14 +36,26 @@
         }
       }
     },
-    "/api/SerieHub/usuario/{usuarioId}": {
+    "/api/SerieHub/meus-favoritos": {
+      "get": {
+        "tags": [
+          "SerieHub"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SerieHub/serie/{tmdbId}": {
       "get": {
         "tags": [
           "SerieHub"
         ],
         "parameters": [
           {
-            "name": "usuarioId",
+            "name": "tmdbId",
             "in": "path",
             "required": true,
             "schema": {
