@@ -2,6 +2,6 @@
 {
     public class TmdbSearchResponseDto
     {
-        public List<TmdbSearchResultDto> results { get; set; }
+        public List<TmdbSearchResultDto> Results { get; set; } = [];
         }
 }

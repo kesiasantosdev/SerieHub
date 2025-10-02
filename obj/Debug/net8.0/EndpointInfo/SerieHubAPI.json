@@ -245,6 +245,11 @@
         "additionalProperties": false
       },
       "CriarUsuarioDto": {
+        "required": [
+          "email",
+          "nome",
+          "senha"
+        ],
         "type": "object",
         "properties": {
           "nome": {
@@ -263,6 +268,10 @@
         "additionalProperties": false
       },
       "LoginUsuarioDto": {
+        "required": [
+          "email",
+          "senha"
+        ],
         "type": "object",
         "properties": {
           "email": {

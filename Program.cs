@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SerieHubAPI.Data;
 using SerieHubAPI.Services;
-using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,19 +11,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("MinhaRegra",
-        policy =>
+        builder =>
         {
-            policy.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
+            builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();  // "*" para dev; em prod: .WithOrigins("https://seu-frontend.com")
         });
 });
+
+var jwtKey = builder.Configuration["Jwt:Key"];
+if (string.IsNullOrEmpty(jwtKey))
+{
+    throw new InvalidOperationException("A chave 'Jwt:Key' não foi configurada no appsettings.json ou variáveis de ambiente.");
+}
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options =>options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddScoped<TmdbService>();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -40,9 +47,10 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
     };
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -53,12 +61,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("MinhaRegra");
+app.UseCors("MinhaRegra");  // <-- MUDANÇA: Especifica a política
 
-app.UseAuthorization();
-app.UseAuthorization();
+app.UseAuthentication();    // <-- ADIÇÃO: Necessário para JWT
+
+app.UseAuthorization();     // <-- Removido o duplicado
+
 app.MapControllers();
 
 app.Run();
-
-
