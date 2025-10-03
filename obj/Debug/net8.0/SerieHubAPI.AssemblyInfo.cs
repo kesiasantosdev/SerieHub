@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SerieHubAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ce1854e138692dcd523be612a9977ab7573097b6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+039e5a8c8f57cf72d80025a1470b227ee81f5092")]
 [assembly: System.Reflection.AssemblyProductAttribute("SerieHubAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SerieHubAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
