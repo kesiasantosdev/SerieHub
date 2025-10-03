@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using SerieHubAPI.Data;
+﻿using SerieHubAPI.Data;
 using SerieHubAPI.Services;
 
 namespace SerieHubAPI.Models
@@ -32,7 +30,7 @@ namespace SerieHubAPI.Models
         }
 
 
-        public static async Task<Serie> AdicionarNovaSerieFavoritaAsync(int usuarioId, int tmdbId, AppDbContext db, TmdbService tmdbService)
+        public static async Task<object> AdicionarNovaSerieFavoritaAsync(int usuarioId, int tmdbId, AppDbContext db, TmdbService tmdbService)
         {
             bool JaExiste = db.Series.Any(s => s.UsuarioId == usuarioId && s.TmdbId == tmdbId);
 
@@ -40,9 +38,12 @@ namespace SerieHubAPI.Models
             {
                 throw new Exception("Série já está na lista de favoritas");
             }
-            var dadosDaApi = tmdbService.BuscarSeriePorIdAsync(tmdbId).Result;
 
-            if (dadosDaApi == null)
+            var dadosDaApi = await tmdbService.BuscarSeriePorIdAsync(tmdbId);
+
+            if (string.IsNullOrEmpty(dadosDaApi?.Name) ||
+                string.IsNullOrEmpty(dadosDaApi?.PosterPath) ||
+                string.IsNullOrEmpty(dadosDaApi?.NumberOfSeasons.ToString()))
             {
                 throw new Exception("Série não encontrada na API do TMDB");
             }
@@ -56,10 +57,17 @@ namespace SerieHubAPI.Models
             );
 
             db.Series.Add(novaSerie);
-            db.SaveChangesAsync();
+            await db.SaveChangesAsync();
 
-            return novaSerie;
-
+            return new
+            {
+                dbid = novaSerie.Id,
+                tmdbId,
+                name = novaSerie.Nome,
+                posterPath = novaSerie.UrlPoster,
+                numberOfSeasons = novaSerie.TotalTemporadas,
+                temporadaAtual = novaSerie.TemporadaAtual,
+            };
         }
         public void AtualizarProgresso(int novaTemporada)
         {

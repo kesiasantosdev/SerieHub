@@ -41,13 +41,13 @@ namespace SerieHubAPI.Services
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             var searchResponse = JsonSerializer.Deserialize<TmdbSearchResponseDto>(content, options);
             
-            if (searchResponse?.results == null)
+            if (searchResponse?.Results == null)
             {
                 return new List<SerieTmdbDto>();
             }
             var listaFinalDeSeries = new List<SerieTmdbDto>();
 
-            foreach (var serieBasica in searchResponse.results)
+            foreach (var serieBasica in searchResponse.Results)
             {
                 var detalhesDaSerie = await BuscarSeriePorIdAsync(serieBasica.Id);
 

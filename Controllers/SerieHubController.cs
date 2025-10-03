@@ -5,8 +5,6 @@ using SerieHubAPI.Dtos;
 using SerieHubAPI.Models;
 using SerieHubAPI.Services;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Linq;
 
 namespace SerieHubAPI.Controllers
 {
@@ -53,7 +51,12 @@ namespace SerieHubAPI.Controllers
         {
             try
             {
-                var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var usuarioIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(usuarioIdString))
+                {
+                    return Unauthorized();
+                }
+                var usuarioId = int.Parse(usuarioIdString);
                 var seriesDoUsuario = Serie.ListarSeriesDoUsuario(usuarioId, _db);
 
                 var resultadoDto = seriesDoUsuario.Select(serie => new 
